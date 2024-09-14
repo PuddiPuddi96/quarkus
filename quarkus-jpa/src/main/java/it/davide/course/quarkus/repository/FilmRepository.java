@@ -7,6 +7,7 @@ import it.davide.course.quarkus.model.Film;
 import it.davide.course.quarkus.model.Film$;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
+import jakarta.transaction.Transactional;
 
 import java.util.Optional;
 import java.util.stream.Stream;
@@ -14,8 +15,12 @@ import java.util.stream.Stream;
 @ApplicationScoped
 public class FilmRepository {
 
+    private final JPAStreamer jpaStreamer;
+
     @Inject
-    JPAStreamer jpaStreamer;
+    public FilmRepository(JPAStreamer jpaStreamer) {
+        this.jpaStreamer = jpaStreamer;
+    }
 
     private static final int PAGE_SIZE = 20;
 
@@ -23,6 +28,12 @@ public class FilmRepository {
         return jpaStreamer.stream(Film.class)
                 .filter(Film$.filmId.equal(filmId))
                 .findFirst();
+    }
+
+    public Stream<Film> getFilms(short minLength) {
+        return jpaStreamer.stream(Film.class)
+                .filter(Film$.length.greaterThan(minLength))
+                .sorted(Film$.length);
     }
 
     public Stream<Film> paged(long page, short minLength) {
@@ -41,4 +52,12 @@ public class FilmRepository {
                 .filter(Film$.title.startsWith(startsWith).and(Film$.length.greaterThan(minLength)))
                 .sorted(Film$.length.reversed());
     }
+
+    @Transactional
+    public void updateRentalRate(short minLength, Float rentalRate) {
+        jpaStreamer.stream(Film.class)
+                .filter(Film$.length.greaterThan(minLength))
+                .forEach(film -> film.setRentalRate(rentalRate));
+    }
+
 }

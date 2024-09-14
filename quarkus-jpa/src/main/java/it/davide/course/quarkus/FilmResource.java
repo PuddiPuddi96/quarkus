@@ -14,8 +14,12 @@ import java.util.stream.Collectors;
 @Path("/")
 public class FilmResource {
 
+    private final FilmRepository filmRepository;
+
     @Inject
-    FilmRepository filmRepository;
+    public FilmResource(FilmRepository filmRepository) {
+        this.filmRepository = filmRepository;
+    }
 
     @GET
     @Path("/helloWorld")
@@ -62,6 +66,17 @@ public class FilmResource {
                 .collect(Collectors.joining("\n"));
     }
 
+    @GET
+    @Path("/update/{minLength}/{rentalRate}")
+    @Produces(MediaType.TEXT_PLAIN)
+    public String update(short minLength, Float rentalRate) {
+        filmRepository.updateRentalRate(minLength, rentalRate);
+        return filmRepository.getFilms(minLength)
+                .map(film -> String.format("%s (%d min) - $%f",
+                        film.getTitle(),
+                        film.getLength(),
+                        film.getRentalRate()))
+                .collect(Collectors.joining("\n"));
+    }
 
-    
 }
