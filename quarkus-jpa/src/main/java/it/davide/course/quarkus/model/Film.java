@@ -1,6 +1,7 @@
 package it.davide.course.quarkus.model;
 
 import jakarta.persistence.*;
+import lombok.*;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
@@ -9,10 +10,11 @@ import java.util.List;
 import java.util.Objects;
 
 @Entity
+@Data
+@AllArgsConstructor
+@RequiredArgsConstructor
 @Table(name = "film", schema = "sakila")
 public class Film {
-
-    public Film() {}
 
     public Film(short filmId, String title, short length) {
         this.filmId = filmId;
@@ -69,6 +71,8 @@ public class Film {
     @Column(name = "last_update")
     private Timestamp lastUpdate;
 
+    @Setter
+    @Getter
     @ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
     @JoinTable(
             name = "film_actor",
@@ -76,102 +80,6 @@ public class Film {
             inverseJoinColumns = { @JoinColumn(name = "actor_id") }
     )
     private List<Actor> actors = new ArrayList<>();
-
-    public short getFilmId() {
-        return filmId;
-    }
-
-    public void setFilmId(short filmId) {
-        this.filmId = filmId;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public short getLanguageId() {
-        return languageId;
-    }
-
-    public void setLanguageId(short languageId) {
-        this.languageId = languageId;
-    }
-
-    public Short getOriginalLanguageId() {
-        return originalLanguageId;
-    }
-
-    public void setOriginalLanguageId(Short originalLanguageId) {
-        this.originalLanguageId = originalLanguageId;
-    }
-
-    public short getRentalDuration() {
-        return rentalDuration;
-    }
-
-    public void setRentalDuration(short rentalDuration) {
-        this.rentalDuration = rentalDuration;
-    }
-
-    public Float getRentalRate() {
-        return rentalRate;
-    }
-
-    public void setRentalRate(Float rentalRate) {
-        this.rentalRate = rentalRate;
-    }
-
-    public Short getLength() {
-        return length;
-    }
-
-    public void setLength(Short length) {
-        this.length = length;
-    }
-
-    public BigDecimal getReplacementCost() {
-        return replacementCost;
-    }
-
-    public void setReplacementCost(BigDecimal replacementCost) {
-        this.replacementCost = replacementCost;
-    }
-
-    public String getRating() {
-        return rating;
-    }
-
-    public void setRating(String rating) {
-        this.rating = rating;
-    }
-
-    public String getSpecialFeatures() {
-        return specialFeatures;
-    }
-
-    public void setSpecialFeatures(String specialFeatures) {
-        this.specialFeatures = specialFeatures;
-    }
-
-    public Timestamp getLastUpdate() {
-        return lastUpdate;
-    }
-
-    public void setLastUpdate(Timestamp lastUpdate) {
-        this.lastUpdate = lastUpdate;
-    }
 
     @Override
     public boolean equals(Object o) {
@@ -186,11 +94,4 @@ public class Film {
         return Objects.hash(filmId, title, description, languageId, originalLanguageId, rentalDuration, rentalRate, length, replacementCost, rating, specialFeatures, lastUpdate);
     }
 
-    public List<Actor> getActors() {
-        return actors;
-    }
-
-    public void setActors(List<Actor> actors) {
-        this.actors = actors;
-    }
 }

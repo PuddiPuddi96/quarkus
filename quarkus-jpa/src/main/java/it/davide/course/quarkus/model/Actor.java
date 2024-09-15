@@ -1,6 +1,7 @@
 package it.davide.course.quarkus.model;
 
 import jakarta.persistence.*;
+import lombok.*;
 
 import java.sql.Timestamp;
 import java.util.HashSet;
@@ -8,6 +9,9 @@ import java.util.Objects;
 import java.util.Set;
 
 @Entity
+@Data
+@AllArgsConstructor
+@RequiredArgsConstructor
 @Table(name = "actor", schema = "sakila")
 public class Actor {
 
@@ -28,40 +32,10 @@ public class Actor {
     @Column(name = "last_update")
     private Timestamp lastUpdate;
 
+    @Setter
+    @Getter
     @ManyToMany(mappedBy = "actors")
     private Set<Film> films = new HashSet<>();
-
-    public short getActorId() {
-        return actorId;
-    }
-
-    public void setActorId(short actorId) {
-        this.actorId = actorId;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
-    public Timestamp getLastUpdate() {
-        return lastUpdate;
-    }
-
-    public void setLastUpdate(Timestamp lastUpdate) {
-        this.lastUpdate = lastUpdate;
-    }
 
     @Override
     public boolean equals(Object o) {
@@ -76,11 +50,4 @@ public class Actor {
         return Objects.hash(actorId, firstName, lastName, lastUpdate);
     }
 
-    public Set<Film> getFilms() {
-        return films;
-    }
-
-    public void setFilms(Set<Film> films) {
-        this.films = films;
-    }
 }
