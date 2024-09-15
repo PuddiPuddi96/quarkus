@@ -24,39 +24,51 @@ public class Film {
     @Id
     @Column(name = "film_id")
     private short filmId;
+
     @Basic
     @Column(name = "title")
     private String title;
+
     @Basic
     @Column(name = "description")
     private String description;
+
     @Basic
     @Column(name = "language_id")
     private short languageId;
+
     @Basic
     @Column(name = "original_language_id")
     private Short originalLanguageId;
+
     @Basic
     @Column(name = "rental_duration")
     private short rentalDuration;
+
     @Basic
     @Column(name = "rental_rate", columnDefinition = "decimal(4,2)")
     private Float rentalRate;
+
     @Basic
     @Column(name = "length")
     private Short length;
+
     @Basic
     @Column(name = "replacement_cost")
     private BigDecimal replacementCost;
+
     @Basic
     @Column(name = "rating", columnDefinition = "enum('G', 'PG', 'PG-13', 'R', 'NC-17')")
     private String rating;
+
     @Basic
     @Column(name = "special_features", columnDefinition = "set('Trailers', 'Commentaries', 'Deleted Scenes', 'Behind the Scenes')")
     private String specialFeatures;
+
     @Basic
     @Column(name = "last_update")
     private Timestamp lastUpdate;
+
     @ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
     @JoinTable(
             name = "film_actor",
