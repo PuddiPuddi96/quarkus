@@ -1,3 +1,3 @@
 # quarkus
 
-Repository for Quarku's projects
+Repository for Quarkus projects
