@@ -33,4 +33,19 @@ class BookResourceTest {
                 .statusCode(200)
                 .body(is("3"));
     }
+
+    @Test
+    void shouldGetABook(){
+        given()
+                .header(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON)
+                .pathParam("id", 1)
+                .when()
+                .get("/api/books/{id}")
+                .then()
+                .statusCode(200)
+                .body("title", is("Title one"))
+                .body("author", is("Davide"))
+                .body("yearOfPubblication", is(2025))
+                .body("genre", is("IT"));
+    }
 }
